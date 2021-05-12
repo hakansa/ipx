@@ -41,19 +41,19 @@ type IP struct {
 }
 
 // IsV4 returns true if ip address is v4
-func (i *IP) IsV4() bool {
+func (i IP) IsV4() bool {
 	return len(i.IP) == IPv4len
 }
 
 // IsV6 returns true if ip address is v6
-func (i *IP) IsV6() bool {
+func (i IP) IsV6() bool {
 	return len(i.IP) == IPv6len
 }
 
 // IsPrivate returns whether i is in a private network
-func (i *IP) IsPrivate() bool {
+func (i IP) IsPrivate() bool {
 	for _, net := range privateNetworks {
-		if net.Contains(*i) {
+		if net.Contains(i) {
 			return true
 		}
 	}
