@@ -22,6 +22,16 @@ type IP struct {
 	net.IP
 }
 
+// IsV4 returns true if ip address is v4
+func (i *IP) IsV4() bool {
+	return len(i.IP) == IPv4len
+}
+
+// IsV6 returns true if ip address is v6
+func (i *IP) IsV6() bool {
+	return len(i.IP) == IPv6len
+}
+
 // IPv4 returns the IP address (in 16-byte form) of the IPv4 address a.b.c.d.
 func IPv4(a, b, c, d byte) IP {
 	ip := net.IPv4(a, b, c, d)
