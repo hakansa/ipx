@@ -30,7 +30,7 @@ func ResolveIPAddr(network, address string) (*IPAddr, error) {
 
 // Network returns the address's network name, "ip".
 func (a *IPAddr) Network() string {
-	return "ips"
+	return "ip"
 }
 
 // String returns the address's network name, "ip".
