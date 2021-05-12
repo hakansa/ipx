@@ -59,3 +59,11 @@ func MustParseIP(s string) (IP, error) {
 
 	return IP{ip}, nil
 }
+
+// ipEmptyString returns an empty string when ip is unset.
+func ipEmptyString(ip net.IP) string {
+	if len(ip) == 0 {
+		return ""
+	}
+	return ip.String()
+}

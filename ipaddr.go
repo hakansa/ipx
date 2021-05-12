@@ -30,10 +30,17 @@ func ResolveIPAddr(network, address string) (*IPAddr, error) {
 
 // Network returns the address's network name, "ip".
 func (a *IPAddr) Network() string {
-	return a.Network()
+	return "ip"
 }
 
 // String returns the address's network name, "ip".
 func (a *IPAddr) String() string {
-	return a.String()
+	if a.IP.IP == nil {
+		return "<nil>"
+	}
+	ip := ipEmptyString(a.IP.IP)
+	if a.Zone != "" {
+		return ip + "%" + a.Zone
+	}
+	return ip
 }
