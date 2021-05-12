@@ -50,6 +50,17 @@ func (i *IP) IsV6() bool {
 	return len(i.IP) == IPv6len
 }
 
+// IsPrivate returns whether i is in a private network
+func (i *IP) IsPrivate() bool {
+	for _, net := range privateNetworks {
+		if net.Contains(*i) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // IPv4 returns the IP address (in 16-byte form) of the IPv4 address a.b.c.d.
 func IPv4(a, b, c, d byte) IP {
 	ip := net.IPv4(a, b, c, d)
