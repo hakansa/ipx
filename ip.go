@@ -82,20 +82,24 @@ func LookupIP(host string) ([]IP, error) {
 	return ipList, err
 }
 
-// ParseIP parses s as an IP address, returning the result.
+// MustParseIP parses s as an IP address, returning the result.
 // The string s can be in IPv4 dotted decimal ("192.0.2.1"),
 // IPv6 ("2001:db8::68"), or IPv4-mapped IPv6 ("::ffff:192.0.2.1") form.
-// If s is not a valid textual representation of an IP address, ParseIP returns nil.
-func ParseIP(s string) IP {
+// If s is not a valid textual representation of an IP address,
+// MustParseIP throws a panic
+func MustParseIP(s string) IP {
 	ip := net.ParseIP(s)
 
+	if ip == nil {
+		panic(ErrInvalidIP)
+	}
 	return IP{ip}
 }
 
-// MustParseIP parses s as an IP address as exactly as ParseIP.
-// Differently, MustParseIP returns ErrInvalidIP if s is not valid
+// ParseIP parses s as an IP address as exactly as MustParseIP.
+// Differently, ParseIP returns ErrInvalidIP if s is not valid
 // textual reprenstation of an IP address
-func MustParseIP(s string) (IP, error) {
+func ParseIP(s string) (IP, error) {
 	ip := net.ParseIP(s)
 
 	if ip == nil {
