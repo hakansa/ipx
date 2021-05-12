@@ -16,6 +16,24 @@ const (
 	IPv6len = 16
 )
 
+// Well-known IPv4 addresses
+var (
+	IPv4bcast     = IPv4(255, 255, 255, 255) // limited broadcast
+	IPv4allsys    = IPv4(224, 0, 0, 1)       // all systems
+	IPv4allrouter = IPv4(224, 0, 0, 2)       // all routers
+	IPv4zero      = IPv4(0, 0, 0, 0)         // all zeros
+)
+
+// Well-known IPv6 addresses
+var (
+	IPv6zero                   = IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	IPv6unspecified            = IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+	IPv6loopback               = IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}}
+	IPv6interfacelocalallnodes = IP{net.IP{0xff, 0x01, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x01}}
+	IPv6linklocalallnodes      = IP{net.IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x01}}
+	IPv6linklocalallrouters    = IP{net.IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02}}
+)
+
 // IP is a single IP address, a slice of bytes.
 // Functions in this package accept either 4-byte (IPv4) or 16-byte (IPv6) slices as input.
 type IP struct {
