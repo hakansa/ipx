@@ -35,12 +35,12 @@ func networkNumberAndMask(n *IPNet) (ip net.IP, m net.IPMask) {
 	}
 	m = n.Mask.IPMask
 	switch len(m) {
-	case net.IPv4len:
-		if len(ip) != net.IPv4len {
+	case IPv4len:
+		if len(ip) != IPv4len {
 			return nil, nil
 		}
-	case net.IPv6len:
-		if len(ip) == net.IPv4len {
+	case IPv6len:
+		if len(ip) == IPv4len {
 			m = m[12:]
 		}
 	default:

@@ -10,6 +10,12 @@ var (
 	ErrInvalidIP = errors.New("invalid ip address")
 )
 
+// IP address lengths (bytes).
+const (
+	IPv4len = 4
+	IPv6len = 16
+)
+
 // IP is a single IP address, a slice of bytes.
 // Functions in this package accept either 4-byte (IPv4) or 16-byte (IPv6) slices as input.
 type IP struct {
