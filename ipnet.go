@@ -50,6 +50,11 @@ func (n *IPNet) String() string {
 	return nn.String() + "/" + strconv.FormatUint(uint64(l), 10)
 }
 
+// Intersects whether the networks intersects the other network
+func (n *IPNet) Intersects(n2 IPNet) bool {
+	return n.Contains(n2.IP) || n2.Contains(n.IP)
+}
+
 func networkNumberAndMask(n *IPNet) (ip net.IP, m net.IPMask) {
 	if ip = n.IP.To4(); ip == nil {
 		ip = n.IP.IP
