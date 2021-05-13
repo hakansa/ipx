@@ -59,7 +59,7 @@ func ParseCIDR(s string) (IP, *IPNet, error) {
 }
 
 // MustParseCIDR parses s as a CIDR notation
-// if an error occured, it throws a panic
+// if an error ocurred, it throws a panic
 func MustParseCIDR(s string) IPNet {
 	_, ipNet, err := ParseCIDR(s)
 	if err != nil {
