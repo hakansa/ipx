@@ -191,3 +191,98 @@ func benchmarkIPString(b *testing.B, size int) {
 		}
 	}
 }
+
+var ipTypeTests = []*struct {
+	in   IP
+	isV4 bool
+	isV6 bool
+}{
+	// IPv4 address
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		true,
+		false,
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		true,
+		false,
+	},
+
+	// IPv4-mapped IPv6 address
+	{
+		IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 192, 0, 2, 1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0, 0, 0, 0}},
+		false,
+		true,
+	},
+
+	// IPv6 address
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0, 0, 0, 0x1, 0x23, 0, 0x12, 0, 0x1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0x1, 0, 0, 0, 0x1, 0, 0, 0, 0x1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0x1, 0, 0, 0, 0x1, 0, 0, 0, 0x1, 0, 0}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0, 0, 0, 0, 0, 0, 0, 0x1, 0, 0, 0, 0, 0, 0x1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0, 0, 0x1, 0, 0, 0, 0, 0, 0}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0, 0, 0x1, 0, 0, 0, 0, 0, 0x1}},
+		false,
+		true,
+	},
+	{
+		IP{net.IP{0x20, 0x1, 0xd, 0xb8, 0, 0, 0, 0, 0, 0xa, 0, 0xb, 0, 0xc, 0, 0xd}},
+		false,
+		true,
+	},
+	{
+		IPv6unspecified,
+		false,
+		true,
+	},
+
+	// IP wildcard equivalent address in Dial/Listen API
+	{
+		IP{},
+		false,
+		false,
+	},
+}
+
+func TestIPTypes(t *testing.T) {
+	for _, tt := range ipTypeTests {
+		if out := tt.in.IsV4(); out != tt.isV4 {
+			t.Errorf("IP.IsV4(%v) = %v, want %v", tt.in, out, tt.isV4)
+		}
+		if out := tt.in.IsV6(); out != tt.isV6 {
+			t.Errorf("IP.IsV6(%v) = %v, want %v", tt.in, out, tt.isV6)
+		}
+	}
+}
