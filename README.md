@@ -37,15 +37,29 @@ func main(){
     // MustParseIP throws a panic if the given string is not a valid IP address
     ip = ipx.MustParseIP("172.16.16.1") 
 
-    // IsV4 returns true if the ip is v4
+    // IsV4 returns true if the IP is v4
     fmt.Printf("Is %v V4: %v\n", ip.String(), ip.IsV4()) // true
 
-    // IsPrivate returns true if the ip is in a private network
+    // IsPrivate returns true if the IP is in a private network
     fmt.Printf("Is %v Private: %v\n", ip.String(), ip.IsPrivate()) // true
 
-    // IPv4 returns the IP address (in 16-byte form) of the IPv4 address 255.255.224.0
-    ip = ipx.IPv4(255, 255, 224, 0)
+    // IPv4 returns the IP address (in 16-byte form) of the IPv4 address 10.99.99.1
+    ip = ipx.IPv4(10, 99, 99, 1)
 
+    // ParseCIDR parses a string in CIDR notation
+    _,ipNet, _ := ipx.ParseCIDR("10.99.99.0/24")
+
+    // Containts returns true if the given IP is in the IP network
+    if ipNet.Contains(ip) {
+        fmt.Printf("%v is in %v network\n",ip.String(), ipNet.String())
+    }
+
+    _,ipNet2,_ := ipx.ParseCIDR("10.99.99.0/23")
+
+    // Intersects returns true if ip networks intersects with each other
+    if ipNet.Intersects(ipNet2) {
+        fmt.Printf("%v network is intersects with %v network\n",ipNet.String(), ipNet2.String())
+    }
 
 }
 
