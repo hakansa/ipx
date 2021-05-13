@@ -5,9 +5,9 @@
 ipx is a library which provides a set of extensions on go's standart IP functions in `net` package.
 
 ## compability with net package
-    ipx is fully compatible with net package.
-    Also, it implements the necessary functions in net package such as ParseIP, ParseCIDR, CIDRMask etc.
-    Therefore, don't need to import net package additionally.
+ipx is fully compatible with net package.
+Also, it implements the necessary functions in net package such as ParseIP, ParseCIDR, CIDRMask etc.
+Therefore, don't need to import net package additionally.
 
 ## install
 
@@ -16,51 +16,48 @@ ipx is a library which provides a set of extensions on go's standart IP function
 ## usage
 
 Below is an example which shows some common use cases for ipx.
+You can access the example in [The Go Playground](https://play.golang.org/p/Hlic8q3BQMw)
 
 ```go
 package main
 
 import (
-    "fmt"
-        
-    "github.com/hakansa/ipx"
+	"fmt"
+
+	"github.com/hakansa/ipx"
 )
 
-func main(){
+func main() {
 
-    // ParseIP throws ErrInvalidIP if given ip is not valid
-    ip, err := ipx.ParseIP("256.256.256.256")
-    if err != nil {
-        // invalid ip
-    }
+	// ParseIP throws ErrInvalidIP if given ip is not valid
+	ip, err := ipx.ParseIP("256.256.256.256")
+	if err != nil {
+		// invalid ip
+	}
 
-    // MustParseIP throws a panic if the given string is not a valid IP address
-    ip = ipx.MustParseIP("172.16.16.1") 
+	// MustParseIP throws a panic if the given string is not a valid IP address
+	ip = ipx.MustParseIP("172.16.16.1")
 
-    // IsV4 returns true if the IP is v4
-    fmt.Printf("Is %v V4: %v\n", ip.String(), ip.IsV4()) // true
+	// IsPrivate returns true if the IP is in a private network
+	fmt.Printf("Is %v Private: %v\n", ip.String(), ip.IsPrivate()) // true
 
-    // IsPrivate returns true if the IP is in a private network
-    fmt.Printf("Is %v Private: %v\n", ip.String(), ip.IsPrivate()) // true
+	// IPv4 returns the IP address (in 16-byte form) of the IPv4 address 10.99.99.1
+	ip = ipx.IPv4(10, 99, 99, 1)
 
-    // IPv4 returns the IP address (in 16-byte form) of the IPv4 address 10.99.99.1
-    ip = ipx.IPv4(10, 99, 99, 1)
+	// ParseCIDR parses a string in CIDR notation
+	_, ipNet, _ := ipx.ParseCIDR("10.99.99.0/24")
 
-    // ParseCIDR parses a string in CIDR notation
-    _,ipNet, _ := ipx.ParseCIDR("10.99.99.0/24")
+	// Containts returns true if the given IP is in the IP network
+	if ipNet.Contains(ip) {
+		fmt.Printf("%v is in %v network\n", ip.String(), ipNet.String())
+	}
 
-    // Containts returns true if the given IP is in the IP network
-    if ipNet.Contains(ip) {
-        fmt.Printf("%v is in %v network\n",ip.String(), ipNet.String())
-    }
+	_, ipNet2, _ := ipx.ParseCIDR("10.99.98.0/23")
 
-    _,ipNet2,_ := ipx.ParseCIDR("10.99.99.0/23")
-
-    // Intersects returns true if ip networks intersects with each other
-    if ipNet.Intersects(ipNet2) {
-        fmt.Printf("%v network is intersects with %v network\n",ipNet.String(), ipNet2.String())
-    }
+	// Intersects returns true if ip networks intersects with each other
+	if ipNet.Intersects(*ipNet2) {
+		fmt.Printf("%v network is intersects with %v network\n", ipNet.String(), ipNet2.String())
+	}
 
 }
-
 ```
