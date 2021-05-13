@@ -286,3 +286,26 @@ func TestIPTypes(t *testing.T) {
 		}
 	}
 }
+
+var ipEmptyStringTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		"192.0.2.1",
+	},
+	{
+		IP{},
+		"",
+	},
+}
+
+func TestIPEmptyString(t *testing.T) {
+	for _, tt := range ipEmptyStringTests {
+		if out := ipEmptyString(tt.in.IP); out != tt.out {
+			t.Errorf("ipEmptyString(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
