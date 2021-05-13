@@ -16,6 +16,7 @@ Therefore, don't need to import net package additionally.
 ## usage
 
 Below is an example which shows some common use cases for ipx.
+
 You can access the example in [The Go Playground](https://play.golang.org/p/Hlic8q3BQMw)
 
 ```go
