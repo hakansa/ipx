@@ -28,8 +28,21 @@ import (
 
 func main(){
 
-    // MustParseIP throws a panic if given ip is not valid
-    ip := ipx.MustParseIP("256.256.256.256") 
+    // ParseIP throws ErrInvalidIP if given ip is not valid
+    ip, err := ipx.ParseIP("256.256.256.256")
+    if err != nil {
+        // invalid ip
+    }
+
+    ip,_ = ipx.ParseIP("172.16.16.1") 
+
+    // IsV4 returns true if the ip is v4
+    fmt.Printf("Is V4: %v\n",ip.IsV4()) // true
+
+    // IsPrivate returns true if the ip is in a private network
+    fmt.Printf("Is Private: %v\n",ip.IsPrivate()) // true
+
+
 
 
 }
