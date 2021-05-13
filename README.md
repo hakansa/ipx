@@ -5,7 +5,9 @@
 ipx is a library which provides a set of extensions on go's standart IP functions in `net` package.
 
 ## compability with net package
-    ipx is fully compatible with net package. Also, it implements the necessary functions in net package such as ParseIP, ParseCIDR, CIDRMask etc. Therefore, don't need to import net package additionally.
+    ipx is fully compatible with net package.
+    Also, it implements the necessary functions in net package such as ParseIP, ParseCIDR, CIDRMask etc.
+    Therefore, don't need to import net package additionally.
 
 ## install
 
