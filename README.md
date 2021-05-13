@@ -34,15 +34,17 @@ func main(){
         // invalid ip
     }
 
-    ip,_ = ipx.ParseIP("172.16.16.1") 
+    // MustParseIP throws a panic if the given string is not a valid IP address
+    ip = ipx.MustParseIP("172.16.16.1") 
 
     // IsV4 returns true if the ip is v4
-    fmt.Printf("Is V4: %v\n",ip.IsV4()) // true
+    fmt.Printf("Is %v V4: %v\n", ip.String(), ip.IsV4()) // true
 
     // IsPrivate returns true if the ip is in a private network
-    fmt.Printf("Is Private: %v\n",ip.IsPrivate()) // true
+    fmt.Printf("Is %v Private: %v\n", ip.String(), ip.IsPrivate()) // true
 
-
+    // IPv4 returns the IP address (in 16-byte form) of the IPv4 address 255.255.224.0
+    ip = ipx.IPv4(255, 255, 224, 0)
 
 
 }
