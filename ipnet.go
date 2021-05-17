@@ -87,6 +87,24 @@ func (n *IPNet) Contains(ip IP) bool {
 	return true
 }
 
+// IPNumber returns the number of ip addresses in the network
+func (n IPNet) IPNumber() int {
+	return 1 << (32 - simpleMaskLength(n.Mask.IPMask))
+}
+
+// UsableIPNumber returns the number of usable ip addresses in the network
+// Basically it excludes the network address and broadcast address
+func (n IPNet) UsableIPNumber() int {
+	maskLen := simpleMaskLength(n.Mask.IPMask)
+	if maskLen == 32 {
+		return 1
+	} else if maskLen == 31 {
+		return 2
+	}
+
+	return (1<<(32-maskLen) - 2)
+}
+
 // Network returns the address's network name, "ip+net".
 func (n *IPNet) Network() string { return "ip+net" }
 

@@ -140,3 +140,44 @@ func TestNetworkNumberAndMask(t *testing.T) {
 		}
 	}
 }
+
+var ipNumberTests = []struct {
+	in  IPNet
+	out int
+}{
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 255, 255)}, 1},
+	{IPNet{IP: IPv4(0, 0, 0, 0), Mask: IPv4Mask(255, 255, 254, 0)}, 512},
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 252, 0)}, 1024},
+	{IPNet{IP: IPv4(135, 104, 0, 1), Mask: IPv4Mask(0, 0, 0, 0)}, 4294967296},
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 255, 0)}, 256},
+}
+
+func TestIPNumber(t *testing.T) {
+	for _, tt := range ipNumberTests {
+		out := tt.in.IPNumber()
+		if out != tt.out {
+			t.Errorf("IPNet.IPNumber(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var usableIPNumberTests = []struct {
+	in  IPNet
+	out int
+}{
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 255, 255)}, 1},
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 255, 254)}, 2},
+	{IPNet{IP: IPv4(0, 0, 0, 0), Mask: IPv4Mask(255, 255, 254, 0)}, 510},
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 252, 0)}, 1022},
+	{IPNet{IP: IPv4(135, 104, 0, 1), Mask: IPv4Mask(0, 0, 0, 0)}, 4294967294},
+	{IPNet{IP: IPv4(135, 104, 0, 0), Mask: IPv4Mask(255, 255, 255, 0)}, 254},
+}
+
+func TestUsableIPNumber(t *testing.T) {
+	for _, tt := range usableIPNumberTests {
+		out := tt.in.UsableIPNumber()
+		if out != tt.out {
+			t.Errorf("IPNet.UsableIPNumber(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
