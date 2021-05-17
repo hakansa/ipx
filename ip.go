@@ -77,7 +77,7 @@ func (i IP) ToHex() string {
 		return fmt.Sprintf("%02X%02X%02X%02X", ip[0], ip[1], ip[2], ip[3])
 	}
 	// ipv6
-	// TODO: implement toBinary for ipv6
+	// TODO: implement toHex for ipv6
 	return ""
 }
 

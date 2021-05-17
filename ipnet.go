@@ -95,14 +95,15 @@ func (n IPNet) IPNumber() int {
 // UsableIPNumber returns the number of usable ip addresses in the network
 // Basically it excludes the network address and broadcast address
 func (n IPNet) UsableIPNumber() int {
-	maskLen := simpleMaskLength(n.Mask.IPMask)
-	if maskLen == 32 {
-		return 1
-	} else if maskLen == 31 {
-		return 2
+	num := n.IPNumber()
+
+	// return the exact network size for /31 and /32
+	if num <= 2 {
+		return num
 	}
 
-	return (1<<(32-maskLen) - 2)
+	// exclude network address and broadcast address
+	return num - 2
 }
 
 // NetworkSize returns the network size
