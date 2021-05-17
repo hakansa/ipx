@@ -2,6 +2,7 @@ package ipx
 
 import (
 	"errors"
+	"fmt"
 	"net"
 )
 
@@ -54,6 +55,17 @@ func (i IP) IsV6() bool {
 	}
 	i.IP = i.To16()
 	return i.IP != nil
+}
+
+func (i IP) ToBinary() string {
+	// ipv4
+	ip := i.To4()
+	if ip != nil {
+		return fmt.Sprintf("%08b%08b%08b%08b", ip[0], ip[1], ip[2], ip[3])
+	}
+	// ipv6
+	// TODO: implement toBinary for ipv6
+	return ""
 }
 
 // IsPrivate returns whether i is in a private network

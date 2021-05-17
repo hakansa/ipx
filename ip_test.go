@@ -309,3 +309,30 @@ func TestIPEmptyString(t *testing.T) {
 		}
 	}
 }
+
+var ipToBinaryTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		"11000000000000000000001000000001",
+	},
+	{
+		IP{},
+		"",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		"00000000000000000000000000000000",
+	},
+}
+
+func TestToBinary(t *testing.T) {
+	for _, tt := range ipToBinaryTests {
+		if out := tt.in.ToBinary(); out != tt.out {
+			t.Errorf("IP.ToBinary(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
