@@ -336,3 +336,30 @@ func TestToBinary(t *testing.T) {
 		}
 	}
 }
+
+var ipToHexTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		"C0000201",
+	},
+	{
+		IP{},
+		"",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		"00000000",
+	},
+}
+
+func TestToHex(t *testing.T) {
+	for _, tt := range ipToHexTests {
+		if out := tt.in.ToHex(); out != tt.out {
+			t.Errorf("IP.ToHex(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}

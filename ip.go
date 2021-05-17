@@ -57,11 +57,24 @@ func (i IP) IsV6() bool {
 	return i.IP != nil
 }
 
+// ToBinary returns the binary reprenstation of IP
 func (i IP) ToBinary() string {
 	// ipv4
 	ip := i.To4()
 	if ip != nil {
 		return fmt.Sprintf("%08b%08b%08b%08b", ip[0], ip[1], ip[2], ip[3])
+	}
+	// ipv6
+	// TODO: implement toBinary for ipv6
+	return ""
+}
+
+// ToHex returns the hex reprenstation of IP
+func (i IP) ToHex() string {
+	// ipv4
+	ip := i.To4()
+	if ip != nil {
+		return fmt.Sprintf("%02X%02X%02X%02X", ip[0], ip[1], ip[2], ip[3])
 	}
 	// ipv6
 	// TODO: implement toBinary for ipv6
