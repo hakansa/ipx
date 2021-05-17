@@ -42,12 +42,18 @@ type IP struct {
 
 // IsV4 returns true if ip address is v4
 func (i IP) IsV4() bool {
-	return len(i.IP) == IPv4len
+	i.IP = i.To4()
+	return i.IP != nil
 }
 
 // IsV6 returns true if ip address is v6
 func (i IP) IsV6() bool {
-	return len(i.IP) == IPv6len
+	// check if ip is v4
+	if i.IsV4() {
+		return false
+	}
+	i.IP = i.To16()
+	return i.IP != nil
 }
 
 // IsPrivate returns whether i is in a private network

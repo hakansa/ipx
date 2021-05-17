@@ -212,13 +212,13 @@ var ipTypeTests = []*struct {
 	// IPv4-mapped IPv6 address
 	{
 		IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 192, 0, 2, 1}},
-		false,
 		true,
+		false,
 	},
 	{
 		IP{net.IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0, 0, 0, 0}},
-		false,
 		true,
+		false,
 	},
 
 	// IPv6 address

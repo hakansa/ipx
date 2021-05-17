@@ -105,6 +105,11 @@ func (n IPNet) UsableIPNumber() int {
 	return (1<<(32-maskLen) - 2)
 }
 
+// NetworkSize returns the network size
+func (n IPNet) NetworkSize() int {
+	return simpleMaskLength(n.Mask.IPMask)
+}
+
 // Network returns the address's network name, "ip+net".
 func (n *IPNet) Network() string { return "ip+net" }
 
