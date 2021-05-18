@@ -120,6 +120,21 @@ func (i IP) IsPrivate() bool {
 	return false
 }
 
+// GetNext returns the next IP
+func (i IP) GetNext() IP {
+	// TODO: implement GetNext for IPv6
+	return i.GetNextN(uint32(1))
+}
+
+// GetNextN returns the n'th next IP
+func (i IP) GetNextN(n uint32) IP {
+	// TODO: implement GetNextN for IPv6
+	val := i.ToInt()
+	val += n
+	i = FromInt(val)
+	return i
+}
+
 // Equal reports whether ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.
@@ -197,6 +212,14 @@ func ParseIP(s string) (IP, error) {
 	}
 
 	return IP{ip}, nil
+}
+
+// FromInt parses i as an IP address
+// Receieved from https://gist.github.com/ammario/649d4c0da650162efd404af23e25b86b
+func FromInt(i uint32) IP {
+	ip := make(net.IP, 4)
+	binary.BigEndian.PutUint32(ip, i)
+	return IP{ip}
 }
 
 // ipEmptyString returns an empty string when ip is unset.

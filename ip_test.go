@@ -417,3 +417,61 @@ func TestToBigInt(t *testing.T) {
 		}
 	}
 }
+
+var getNextTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		"172.16.16.2",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		"0.0.0.1",
+	},
+	{
+		IP{net.IP{255, 255, 255, 255}},
+		"0.0.0.0",
+	},
+}
+
+func TestGetNext(t *testing.T) {
+	for _, tt := range getNextTests {
+		if out := tt.in.GetNext().String(); out != tt.out {
+			t.Errorf("IP.GetNext(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var getNextNTests = []*struct {
+	in  IP
+	n   uint32
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		uint32(2),
+		"172.16.16.3",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		uint32(14),
+		"0.0.0.14",
+	},
+	{
+		IP{net.IP{255, 255, 255, 255}},
+		uint32(26),
+		"0.0.0.25",
+	},
+}
+
+func TestGetNextN(t *testing.T) {
+	for _, tt := range getNextNTests {
+		if out := tt.in.GetNextN(tt.n).String(); out != tt.out {
+			t.Errorf("IP.GetNext(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
