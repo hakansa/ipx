@@ -58,10 +58,10 @@ func main() {
 	ip.IsPrivate() // true
 
 	// GetNext returns next IP
-	ip = ip.GetNext() // returns 172.16.16.2
+	ip.GetNext() // 172.16.16.2
 
 	// GetNextN returns n'th next IP
-	ip = ip.GetNextN(uint32(10)) // returns 172.16.16.12
+	ip.GetNextN(uint32(10)) // 172.16.16.11
 
 	
 	// All the other methods that the net package provides can be used with ipx
