@@ -63,6 +63,9 @@ func main() {
 	// GetNextN returns n'th next IP
 	ip.GetNextN(uint32(10)) // 172.16.16.11
 
+	// FromInt returns IP address for given integer
+	ip = ipx.FromInt(uint32(2886733825)) // 172.16.16.1
+
 	
 	// All the other methods that the net package provides can be used with ipx
 	// ip.DefaultMask()
