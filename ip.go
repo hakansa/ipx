@@ -73,13 +73,14 @@ func (i IP) ToInt() uint32 {
 
 // ToBigInt returns the bigint reprenstation of IP
 func (i IP) ToBigInt() *big.Int {
+
 	num := big.NewInt(0)
 	// bigint for ipv4
-	i = i.To4()
-	if i.IP == nil {
-		i = i.To16()
+	ip := i.To4()
+	if ip.IP == nil {
+		ip = i.To16()
 	}
-	num.SetBytes(i.IP)
+	num.SetBytes(ip.IP)
 
 	return num
 }

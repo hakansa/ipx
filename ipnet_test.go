@@ -25,7 +25,7 @@ func TestParseCIDR(t *testing.T) {
 		if !reflect.DeepEqual(err, tt.err) {
 			t.Errorf("ParseCIDR(%q) = %v, %v; want %v, %v", tt.in, ip, netw, tt.ip, tt.net)
 		}
-		if err == nil && (!tt.ip.Equal(ip.IP) || !tt.net.IP.Equal(netw.IP.IP) || !reflect.DeepEqual(netw.Mask, tt.net.Mask)) {
+		if err == nil && (!tt.ip.Equal(ip) || !tt.net.IP.Equal(netw.IP) || !reflect.DeepEqual(netw.Mask, tt.net.Mask)) {
 			t.Errorf("ParseCIDR(%q) = %v, {%v, %v}; want %v, {%v, %v}", tt.in, ip, netw.IP, netw.Mask, tt.ip, tt.net.IP, tt.net.Mask)
 		}
 	}
