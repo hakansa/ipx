@@ -1,8 +1,10 @@
 package ipx
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
+	"math/big"
 	"net"
 )
 
@@ -36,7 +38,8 @@ var (
 )
 
 // IP is a single IP address, a slice of bytes.
-// Functions in this package accept either 4-byte (IPv4) or 16-byte (IPv6) slices as input.
+// Functions in this package accept
+// either 4-byte (IPv4) or 16-byte (IPv6) slices as input.
 type IP struct {
 	net.IP
 }
@@ -55,6 +58,30 @@ func (i IP) IsV6() bool {
 	}
 	i.IP = i.To16()
 	return i.IP != nil
+}
+
+// ToInt returns the int reprenstation of IP
+// If i is an IPv6 address, it returns zero
+func (i IP) ToInt() uint32 {
+	i.IP = i.To4()
+
+	if i.IP == nil {
+		return uint32(0)
+	}
+	return binary.BigEndian.Uint32(i.IP)
+}
+
+// ToBigInt returns the bigint reprenstation of IP
+func (i IP) ToBigInt() *big.Int {
+	num := big.NewInt(0)
+	// bigint for ipv4
+	i.IP = i.To4()
+	if i.IP == nil {
+		i.IP = i.To16()
+	}
+	num.SetBytes(i.IP)
+
+	return num
 }
 
 // ToBinary returns the binary reprenstation of IP

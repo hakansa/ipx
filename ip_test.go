@@ -363,3 +363,57 @@ func TestToHex(t *testing.T) {
 		}
 	}
 }
+
+var ipToIntTests = []*struct {
+	in  IP
+	out int
+}{
+	// IPv4 address
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		0,
+	},
+	{
+		IP{net.IP{172, 16, 16, 37}},
+		2886733861,
+	},
+	{
+		IP{},
+		0,
+	},
+}
+
+func TestToInt(t *testing.T) {
+	for _, tt := range ipToIntTests {
+		if out := tt.in.ToInt(); int(out) != tt.out {
+			t.Errorf("IP.ToInt(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var ipToBigIntTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		"3221225985",
+	},
+	{
+		IP{},
+		"0",
+	},
+	{
+		MustParseIP("2001:0db8:85a3:0000:0000:8a2e:0370:7334"),
+		"42540766452641154071740215577757643572",
+	},
+}
+
+func TestToBigInt(t *testing.T) {
+	for _, tt := range ipToBigIntTests {
+		if out := tt.in.ToBigInt().String(); out != tt.out {
+			t.Errorf("IP.ToBigInt(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
