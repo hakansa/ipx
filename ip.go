@@ -46,7 +46,7 @@ type IP struct {
 
 // IsV4 returns true if ip address is v4
 func (i IP) IsV4() bool {
-	i.IP = i.To4()
+	i = i.To4()
 	return i.IP != nil
 }
 
@@ -56,14 +56,14 @@ func (i IP) IsV6() bool {
 	if i.IsV4() {
 		return false
 	}
-	i.IP = i.To16()
+	i = i.To16()
 	return i.IP != nil
 }
 
 // ToInt returns the int reprenstation of IP
 // If i is an IPv6 address, it returns zero
 func (i IP) ToInt() uint32 {
-	i.IP = i.To4()
+	i = i.To4()
 
 	if i.IP == nil {
 		return uint32(0)
@@ -75,9 +75,9 @@ func (i IP) ToInt() uint32 {
 func (i IP) ToBigInt() *big.Int {
 	num := big.NewInt(0)
 	// bigint for ipv4
-	i.IP = i.To4()
+	i = i.To4()
 	if i.IP == nil {
-		i.IP = i.To16()
+		i = i.To16()
 	}
 	num.SetBytes(i.IP)
 
@@ -88,8 +88,8 @@ func (i IP) ToBigInt() *big.Int {
 func (i IP) ToBinary() string {
 	// ipv4
 	ip := i.To4()
-	if ip != nil {
-		return fmt.Sprintf("%08b%08b%08b%08b", ip[0], ip[1], ip[2], ip[3])
+	if ip.IP != nil {
+		return fmt.Sprintf("%08b%08b%08b%08b", ip.IP[0], ip.IP[1], ip.IP[2], ip.IP[3])
 	}
 	// ipv6
 	// TODO: implement toBinary for ipv6
@@ -100,8 +100,8 @@ func (i IP) ToBinary() string {
 func (i IP) ToHex() string {
 	// ipv4
 	ip := i.To4()
-	if ip != nil {
-		return fmt.Sprintf("%02X%02X%02X%02X", ip[0], ip[1], ip[2], ip[3])
+	if ip.IP != nil {
+		return fmt.Sprintf("%02X%02X%02X%02X", ip.IP[0], ip.IP[1], ip.IP[2], ip.IP[3])
 	}
 	// ipv6
 	// TODO: implement toHex for ipv6

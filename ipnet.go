@@ -72,8 +72,8 @@ func MustParseCIDR(s string) IPNet {
 // Contains reports whether the network includes ip.
 func (n *IPNet) Contains(ip IP) bool {
 	nn, m := networkNumberAndMask(n)
-	if x := ip.To4(); x != nil {
-		ip.IP = x
+	if x := ip.To4(); x.IP != nil {
+		ip = x
 	}
 	l := len(ip.IP)
 	if l != len(nn) {
@@ -138,7 +138,7 @@ func (n *IPNet) Intersects(n2 IPNet) bool {
 }
 
 func networkNumberAndMask(n *IPNet) (ip net.IP, m net.IPMask) {
-	if ip = n.IP.To4(); ip == nil {
+	if ip = n.IP.To4().IP; ip == nil {
 		ip = n.IP.IP
 		if len(ip) != net.IPv6len {
 			return nil, nil
