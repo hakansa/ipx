@@ -15,9 +15,70 @@ Therefore, don't need to import net package additionally.
 
 ## usage
 
-Below is an example which shows some common use cases for ipx.
+The following examples shows some common use cases for ipx.
 
 You can access the example in [The Go Playground](https://play.golang.org/p/Hlic8q3BQMw)
+
+## IP 
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/hakansa/ipx"
+)
+
+func main() {
+	// ParseIP throws ErrInvalidIP if given ip is not valid
+	ip, err := ipx.ParseIP("256.256.256.256")
+	if err != nil {
+		// invalid ip
+	}
+
+	// MustParseIP throws a panic if the given string is not a valid IP address
+	ip = ipx.MustParseIP("172.16.16.1")
+
+	// IsV4 returns true for ipv4 addresses
+	ip.IsV4() // true
+
+	// IsV6 returns true for ipv6 addresses
+	ip.IsV6() // false 
+
+	// ToInt returns the decimal representation of ip
+	ip.ToInt() // 2886733825
+
+	// ToBinary returns the binary representation of ip
+	ip.ToBinary() // 10101100000100000001000000000001
+
+	// ToHex returns the hex representation of ip
+	ip.ToHex() // AC101001
+
+	// IsPrivate returns true if ip is in a private network
+	ip.IsPrivate() // true
+
+	
+	// All the other methods that the net package provides can be used with ipx
+	// ip.DefaultMask()
+	// ip.Equal(x)
+	// ip.IsGlobalUnicast()
+	// ip.IsInterfaceLocalMulticast()
+	// ip.IsLinkLocalMulticast()
+	// ip.IsLinkLocalUnicast()
+	// ip.IsLoopback()
+	// ip.IsMulticast()
+	// ip.IsUnspecified()
+	// ip.MarshalText()
+	// ip.Mask(IPMask{})
+	// ip.String()
+	// ip.To4()
+	// ip.To16()
+	// ip.UnmarshalText()
+}
+
+```
+
+## Other Examples
 
 ```go
 package main

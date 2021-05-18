@@ -119,6 +119,37 @@ func (i IP) IsPrivate() bool {
 	return false
 }
 
+// Equal reports whether ip and x are the same IP address.
+// An IPv4 address and that same address in IPv6 form are
+// considered to be equal.
+func (i IP) Equal(x IP) bool {
+	return i.IP.Equal(x.IP)
+}
+
+// Mask returns the result of masking the IP address ip with mask.
+func (i IP) Mask(mask IPMask) IP {
+	return IP{i.IP.Mask(mask.IPMask)}
+}
+
+// To4 converts the IPv4 address ip to a 4-byte representation.
+// If ip is not an IPv4 address, To4 returns nil.
+func (i IP) To4() IP {
+	return IP{i.IP.To4()}
+}
+
+// To16 converts the IP address ip to a 16-byte representation.
+// If ip is not an IP address (it is the wrong length), To16 returns nil.
+func (i IP) To16() IP {
+	return IP{i.IP.To16()}
+}
+
+// DefaultMask returns the default IP mask for the IP address ip.
+// Only IPv4 addresses have default masks; DefaultMask returns
+// nil if ip is not a valid IPv4 address.
+func (i IP) DefaultMask() IPMask {
+	return IPMask{i.IP.DefaultMask()}
+}
+
 // IPv4 returns the IP address (in 16-byte form) of the IPv4 address a.b.c.d.
 func IPv4(a, b, c, d byte) IP {
 	ip := net.IPv4(a, b, c, d)
