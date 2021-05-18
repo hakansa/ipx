@@ -475,3 +475,47 @@ func TestGetNextN(t *testing.T) {
 		}
 	}
 }
+
+var getAllNextNTests = []*struct {
+	in  IP
+	n   uint32
+	out []IP
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		uint32(2),
+		[]IP{
+			{net.IP{172, 16, 16, 2}},
+			{net.IP{172, 16, 16, 3}},
+		},
+	},
+	{
+		IP{net.IP{10, 10, 37, 24}},
+		uint32(4),
+		[]IP{
+			{net.IP{10, 10, 37, 25}},
+			{net.IP{10, 10, 37, 26}},
+			{net.IP{10, 10, 37, 27}},
+			{net.IP{10, 10, 37, 28}},
+		},
+	},
+	{
+		IP{net.IP{255, 255, 255, 254}},
+		uint32(3),
+		[]IP{
+			{net.IP{255, 255, 255, 255}},
+			{net.IP{0, 0, 0, 0}},
+			{net.IP{0, 0, 0, 1}},
+		},
+	},
+}
+
+func TestGetAllNextN(t *testing.T) {
+	for _, tt := range getAllNextNTests {
+		if out := tt.in.GetAllNextN(tt.n); !reflect.DeepEqual(out, tt.out) {
+			t.Errorf("IP.GetAllNextN(%q) = %v, want %v", tt.in, out, tt.out)
+		}
+
+	}
+}

@@ -135,6 +135,16 @@ func (i IP) GetNextN(n uint32) IP {
 	return i
 }
 
+// GetAllNextN returns all IP's until n'th next IP
+func (i IP) GetAllNextN(n uint32) []IP {
+	var ipList []IP
+
+	for j := 0; uint32(j) < n; j++ {
+		ipList = append(ipList, i.GetNextN(uint32(j+1)))
+	}
+	return ipList
+}
+
 // Equal reports whether ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.
