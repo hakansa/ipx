@@ -68,7 +68,7 @@ func main() {
 	ip.GetAllNextN(uint32(3)) // []IP{ 172.16.16.2 , 172.16.16.3 , 172.16.16.4 }
 
 	// GetPrevious returns previous IP
-	ip.GetNext() // 172.16.16.0
+	ip.GetPrevious() // 172.16.16.0
 
 	// GetPreviousN returns n'th previous IP
 	ip.GetPreviousN(uint32(2)) // 172.16.15.255
