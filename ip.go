@@ -151,6 +151,38 @@ func (i IP) GetAllNextN(n uint32) []IP {
 	return ipList
 }
 
+// GetPrevious returns the previous IP
+func (i IP) GetPrevious() IP {
+	// TODO: implement GetPrevious for IPv6
+	return i.GetPreviousN(uint32(1))
+}
+
+// GetPreviousN returns the n'th next IP
+func (i IP) GetPreviousN(n uint32) IP {
+	// TODO: implement GetPreviousN for IPv6
+	val := i.ToInt()
+
+	if n > val {
+		n = n - val - 1
+		val = IPv4bcastInt
+	}
+	val -= n
+
+	i = FromInt(val)
+	return i
+}
+
+// GetAllPreviousN returns all IP's until n'th previous IP
+func (i IP) GetAllPreviousN(n uint32) []IP {
+	var ipList []IP
+
+	for n > 0 {
+		ipList = append(ipList, i.GetPreviousN(uint32(n)))
+		n--
+	}
+	return ipList
+}
+
 // Equal reports whether ip and x are the same IP address.
 // An IPv4 address and that same address in IPv6 form are
 // considered to be equal.

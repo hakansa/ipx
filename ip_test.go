@@ -471,7 +471,7 @@ var getNextNTests = []*struct {
 func TestGetNextN(t *testing.T) {
 	for _, tt := range getNextNTests {
 		if out := tt.in.GetNextN(tt.n).String(); out != tt.out {
-			t.Errorf("IP.GetNext(%v) = %v, want %v", tt.in, out, tt.out)
+			t.Errorf("IP.GetNextN(%v) = %v, want %v", tt.in, out, tt.out)
 		}
 	}
 }
@@ -515,6 +515,130 @@ func TestGetAllNextN(t *testing.T) {
 	for _, tt := range getAllNextNTests {
 		if out := tt.in.GetAllNextN(tt.n); !reflect.DeepEqual(out, tt.out) {
 			t.Errorf("IP.GetAllNextN(%q) = %v, want %v", tt.in, out, tt.out)
+		}
+
+	}
+}
+
+var getPreviousTests = []*struct {
+	in  IP
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 30}},
+		"172.16.16.29",
+	},
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		"172.16.16.0",
+	},
+	{
+		IP{net.IP{172, 16, 16, 0}},
+		"172.16.15.255",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		"255.255.255.255",
+	},
+	{
+		IP{net.IP{255, 255, 255, 255}},
+		"255.255.255.254",
+	},
+	{
+		IP{net.IP{0, 0, 0, 1}},
+		"0.0.0.0",
+	},
+}
+
+func TestGetPrevious(t *testing.T) {
+	for _, tt := range getPreviousTests {
+		if out := tt.in.GetPrevious().String(); out != tt.out {
+			t.Errorf("IP.GetPrevious(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var getPreviousNTests = []*struct {
+	in  IP
+	n   uint32
+	out string
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		uint32(2),
+		"172.16.15.255",
+	},
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		uint32(14),
+		"255.255.255.242",
+	},
+	{
+		IP{net.IP{0, 0, 0, 3}},
+		uint32(6),
+		"255.255.255.253",
+	},
+	{
+		IP{net.IP{0, 0, 0, 2}},
+		uint32(3),
+		"255.255.255.255",
+	},
+	{
+		IP{net.IP{0, 0, 0, 3}},
+		uint32(3),
+		"0.0.0.0",
+	},
+}
+
+func TestGetPreviousN(t *testing.T) {
+	for _, tt := range getPreviousNTests {
+		if out := tt.in.GetPreviousN(tt.n).String(); out != tt.out {
+			t.Errorf("IP.GetPreviousN(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var getAllPreviousNTests = []*struct {
+	in  IP
+	n   uint32
+	out []IP
+}{
+	// IPv4 address
+	{
+		IP{net.IP{172, 16, 16, 1}},
+		uint32(2),
+		[]IP{
+			{net.IP{172, 16, 15, 255}},
+			{net.IP{172, 16, 16, 0}},
+		},
+	},
+	{
+		IP{net.IP{10, 10, 37, 24}},
+		uint32(4),
+		[]IP{
+			{net.IP{10, 10, 37, 20}},
+			{net.IP{10, 10, 37, 21}},
+			{net.IP{10, 10, 37, 22}},
+			{net.IP{10, 10, 37, 23}},
+		},
+	},
+	{
+		IP{net.IP{0, 0, 0, 2}},
+		uint32(3),
+		[]IP{
+			{net.IP{255, 255, 255, 255}},
+			{net.IP{0, 0, 0, 0}},
+			{net.IP{0, 0, 0, 1}},
+		},
+	},
+}
+
+func TestGetAllPreviousN(t *testing.T) {
+	for _, tt := range getAllPreviousNTests {
+		if out := tt.in.GetAllPreviousN(tt.n); !reflect.DeepEqual(out, tt.out) {
+			t.Errorf("IP.GetAllPreviousN(%q) = %v, want %v", tt.in, out, tt.out)
 		}
 
 	}
