@@ -70,6 +70,9 @@ func main() {
 	// FromInt returns IP address for given integer
 	ip = ipx.FromInt(uint32(2886733825)) // 172.16.16.1
 
+	// RandomIPv4 returns a random IPv4 address
+	ip = ipx.RandomIPv4() // x.y.z.t
+
 	
 	// All the other methods that the net package provides can be used with ipx
 	// ip.DefaultMask()
