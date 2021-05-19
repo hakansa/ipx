@@ -67,6 +67,16 @@ func main() {
 	// that contains all IP's until n'th next IP
 	ip.GetAllNextN(uint32(3)) // []IP{ 172.16.16.2 , 172.16.16.3 , 172.16.16.4 }
 
+	// GetPrevious returns previous IP
+	ip.GetNext() // 172.16.16.0
+
+	// GetPreviousN returns n'th previous IP
+	ip.GetPreviousN(uint32(2)) // 172.16.15.255
+
+	// GetAllPreviousN returns an IP array
+	// that contains all IP's from n'th previous IP
+	ip.GetAllPreviousN(uint32(3)) // []IP{ 172.16.15.254 , 172.16.15.255 , 172.16.16.0 }
+
 	// FromInt returns IP address for given integer
 	ip = ipx.FromInt(uint32(2886733825)) // 172.16.16.1
 
