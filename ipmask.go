@@ -15,7 +15,6 @@ type IPMask struct {
 // For a mask of this form, CIDRMask is the inverse of IPMask.Size.
 func CIDRMask(ones, bits int) IPMask {
 	ipmask := net.CIDRMask(ones, bits)
-
 	return IPMask{ipmask}
 }
 

@@ -39,6 +39,9 @@ func main() {
 	// MustParseIP throws a panic if the given string is not a valid IP address
 	ip = ipx.MustParseIP("172.16.16.1")
 
+	// IPv4 returns the IP address (in 16-byte form) of the IPv4 address a.b.c.d.
+	ip = ipx.IPv4(172, 16, 16, 1)
+
 	// IsV4 returns true for ipv4 addresses
 	ip.IsV4() // true
 
@@ -46,7 +49,12 @@ func main() {
 	ip.IsV6() // false 
 
 	// ToInt returns the decimal representation of ip
+	// ToInt returns 0 for ipv6 addresses
 	ip.ToInt() // 2886733825
+
+	// ToBigInt returns the decimal representation of ip in math.BigInt format
+	// ToBigInt can be used for ipv4 and ipv6 addresses
+	ip.ToBigInt() // 2886733825
 
 	// ToBinary returns the binary representation of ip
 	ip.ToBinary() // 10101100000100000001000000000001
@@ -85,23 +93,61 @@ func main() {
 
 	
 	// All the other methods that the net package provides can be used with ipx
-	// ip.DefaultMask()
-	// ip.Equal(x)
-	// ip.IsGlobalUnicast()
-	// ip.IsInterfaceLocalMulticast()
-	// ip.IsLinkLocalMulticast()
-	// ip.IsLinkLocalUnicast()
-	// ip.IsLoopback()
-	// ip.IsMulticast()
-	// ip.IsUnspecified()
-	// ip.MarshalText()
-	// ip.Mask(IPMask{})
-	// ip.String()
-	// ip.To4()
-	// ip.To16()
-	// ip.UnmarshalText()
+	ip.DefaultMask()
+	ip.Equal(x)
+	ip.IsGlobalUnicast()
+	ip.IsInterfaceLocalMulticast()
+	ip.IsLinkLocalMulticast()
+	ip.IsLinkLocalUnicast()
+	ip.IsLoopback()
+	ip.IsMulticast()
+	ip.IsUnspecified()
+	ip.MarshalText()
+	ip.Mask(IPMask{})
+	ip.String()
+	ip.To4()
+	ip.To16()
+	ip.UnmarshalText()
 }
 
+```
+## IPNet
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/hakansa/ipx"
+)
+
+func main() {
+
+	// ParseCIDR parses a string in CIDR notation
+	_, ipNet, _ := ipx.ParseCIDR("172.16.16.0/24")
+
+	// MustParseIP throws a panic if the given string is not a valid IP Network
+	ipNet = ipx.MustParseCIDR("172.16.16.0/24")
+
+	// IPNumber returns the number of ip addresses in the network
+	ipNet.IPNumber() // 256
+
+	// UsableIPNumber returns the number of usable ip addresses in the network
+	// Basically it excludes the network address and broadcast address
+	ipNet.UsableIPNumber() // 254
+
+	// NetworkSize returns the network size
+	ipNet.NetworkSize() // 24
+
+	// Intersects whether the networks intersects the other network
+	ipNet.Intersects(ipx.MustParseCIDR("172.16.15.0/23")) // true
+
+	// All the other methods that the net package provides can be used with ipx
+	ipNet.Contains(ipx.IPv4(172, 16, 16, 23))
+	ipNet.Network()
+	ipNet.String()
+
+}
 ```
 
 ## Other Examples
@@ -117,20 +163,7 @@ import (
 
 func main() {
 
-	// ParseIP throws ErrInvalidIP if given ip is not valid
-	ip, err := ipx.ParseIP("256.256.256.256")
-	if err != nil {
-		// invalid ip
-	}
-
-	// MustParseIP throws a panic if the given string is not a valid IP address
-	ip = ipx.MustParseIP("172.16.16.1")
-
-	// IsPrivate returns true if the IP is in a private network
-	fmt.Printf("Is %v Private: %v\n", ip.String(), ip.IsPrivate()) // true
-
-	// IPv4 returns the IP address (in 16-byte form) of the IPv4 address 10.99.99.1
-	ip = ipx.IPv4(10, 99, 99, 1)
+	
 
 	// ParseCIDR parses a string in CIDR notation
 	_, ipNet, _ := ipx.ParseCIDR("10.99.99.0/24")
