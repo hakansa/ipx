@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"math/rand"
 	"net"
 )
 
@@ -25,6 +26,11 @@ var (
 	IPv4allsys    = IPv4(224, 0, 0, 1)       // all systems
 	IPv4allrouter = IPv4(224, 0, 0, 2)       // all routers
 	IPv4zero      = IPv4(0, 0, 0, 0)         // all zeros
+)
+
+// Well-known IPv4 addresses' decimal represntation
+var (
+	IPv4bcastInt = IPv4bcast.ToInt()
 )
 
 // Well-known IPv6 addresses
@@ -230,6 +236,11 @@ func FromInt(i uint32) IP {
 	ip := make(net.IP, 4)
 	binary.BigEndian.PutUint32(ip, i)
 	return IP{ip}
+}
+
+// RandomIPv4 returns a random IPv4 address
+func RandomIPv4() IP {
+	return FromInt(uint32(rand.Intn(int(IPv4bcastInt))))
 }
 
 // ipEmptyString returns an empty string when ip is unset.

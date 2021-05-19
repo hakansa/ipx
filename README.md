@@ -64,7 +64,7 @@ func main() {
 	ip.GetNextN(uint32(10)) // 172.16.16.11
 
 	// GetAllNextN returns an IP array
-	//that contains all IP's until n'th next IP
+	// that contains all IP's until n'th next IP
 	ip.GetAllNextN(uint32(3)) // []IP{ 172.16.16.2 , 172.16.16.3 , 172.16.16.4 }
 
 	// FromInt returns IP address for given integer
