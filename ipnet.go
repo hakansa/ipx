@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-var privateNetworks = []IPNet{
+var privateNetworks = []*IPNet{
 	MustParseCIDR("10.0.0.0/8"),         // RFC1918
 	MustParseCIDR("172.16.0.0/12"),      // private
 	MustParseCIDR("192.168.0.0/16"),     // private
@@ -60,13 +60,13 @@ func ParseCIDR(s string) (IP, *IPNet, error) {
 
 // MustParseCIDR parses s as a CIDR notation
 // if an error ocurred, it throws a panic
-func MustParseCIDR(s string) IPNet {
+func MustParseCIDR(s string) *IPNet {
 	_, ipNet, err := ParseCIDR(s)
 	if err != nil {
 		panic(err)
 	}
 
-	return *ipNet
+	return ipNet
 }
 
 // Contains reports whether the network includes ip.
@@ -88,13 +88,13 @@ func (n *IPNet) Contains(ip IP) bool {
 }
 
 // IPNumber returns the number of ip addresses in the network
-func (n IPNet) IPNumber() int {
+func (n *IPNet) IPNumber() int {
 	return 1 << (32 - simpleMaskLength(n.Mask.IPMask))
 }
 
 // UsableIPNumber returns the number of usable ip addresses in the network
 // Basically it excludes the network address and broadcast address
-func (n IPNet) UsableIPNumber() int {
+func (n *IPNet) UsableIPNumber() int {
 	num := n.IPNumber()
 
 	// return the exact network size for /31 and /32
@@ -107,8 +107,35 @@ func (n IPNet) UsableIPNumber() int {
 }
 
 // NetworkSize returns the network size
-func (n IPNet) NetworkSize() int {
+func (n *IPNet) NetworkSize() int {
 	return simpleMaskLength(n.Mask.IPMask)
+}
+
+// FirstIP returns the first ip in the network
+func (n *IPNet) FirstIP() IP {
+	return n.IP
+}
+
+// FirstUsableIP returns the first usable ip in the network
+func (n *IPNet) FirstUsableIP() IP {
+	return n.IP.GetNext()
+}
+
+// LastIP returns the last ip in the network
+func (n *IPNet) LastIP() IP {
+	if n.IPNumber() == 1 {
+		return n.IP
+	}
+	return n.IP.GetNextN(uint32(n.IPNumber() - 1))
+}
+
+// LastUsableIP returns the last usable ip in the network
+// If n is a /31 or /32 network, returns the firstIP
+func (n *IPNet) LastUsableIP() IP {
+	if n.IPNumber() <= 2 {
+		return n.IP
+	}
+	return n.IP.GetNextN(uint32(n.IPNumber() - 2))
 }
 
 // Network returns the address's network name, "ip+net".

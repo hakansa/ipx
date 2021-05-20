@@ -181,3 +181,93 @@ func TestUsableIPNumber(t *testing.T) {
 		}
 	}
 }
+
+var firstIPTests = []struct {
+	in        IPNet
+	out       IP
+	outUsable IP
+}{
+	{
+		*MustParseCIDR("172.16.16.0/24"),
+		IPv4(172, 16, 16, 0),
+		IPv4(172, 16, 16, 1),
+	},
+	{
+		*MustParseCIDR("172.16.16.11/20"),
+		IPv4(172, 16, 16, 0),
+		IPv4(172, 16, 16, 1),
+	},
+	{
+		*MustParseCIDR("192.168.97.24/26"),
+		IPv4(192, 168, 97, 0),
+		IPv4(192, 168, 97, 1),
+	},
+	{
+		*MustParseCIDR("192.168.97.24/20"),
+		IPv4(192, 168, 96, 0),
+		IPv4(192, 168, 96, 1),
+	},
+}
+
+func TestFirstIP(t *testing.T) {
+	for _, tt := range firstIPTests {
+		out := tt.in.FirstIP()
+		if out.String() != tt.out.String() {
+			t.Errorf("IPNet.FirstIP(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+func TestFirstUsableIP(t *testing.T) {
+	for _, tt := range firstIPTests {
+		out := tt.in.FirstUsableIP()
+		if out.String() != tt.outUsable.String() {
+			t.Errorf("IPNet.FirstUsableIP(%v) = %v, want %v", tt.in, out, tt.outUsable)
+		}
+	}
+}
+
+var lastIPTests = []struct {
+	in        IPNet
+	out       IP
+	outUsable IP
+}{
+	{
+		*MustParseCIDR("172.16.16.0/24"),
+		IPv4(172, 16, 16, 255),
+		IPv4(172, 16, 16, 254),
+	},
+	{
+		*MustParseCIDR("172.16.16.11/20"),
+		IPv4(172, 16, 31, 255),
+		IPv4(172, 16, 31, 254),
+	},
+	{
+		*MustParseCIDR("192.168.97.24/26"),
+		IPv4(192, 168, 97, 63),
+		IPv4(192, 168, 97, 62),
+	},
+	{
+		*MustParseCIDR("192.168.97.24/20"),
+		IPv4(192, 168, 111, 255),
+		IPv4(192, 168, 111, 254),
+	},
+}
+
+func TestLastIP(t *testing.T) {
+	for _, tt := range lastIPTests {
+		out := tt.in.LastIP()
+		if out.String() != tt.out.String() {
+			t.Errorf("IPNet.LastIP(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+func TestLastUsableIP(t *testing.T) {
+	for _, tt := range lastIPTests {
+		out := tt.in.LastUsableIP()
+		if out.String() != tt.outUsable.String() {
+			t.Errorf("IPNet.LastUsableIP(%v) = %v, want %v", tt.in, out, tt.outUsable)
+		}
+	}
+}

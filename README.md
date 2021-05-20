@@ -94,7 +94,7 @@ func main() {
 	
 	// All the other methods that the net package provides can be used with ipx
 	ip.DefaultMask()
-	ip.Equal(x)
+	ip.Equal(ipx.IPv4(172, 16, 16, 1))
 	ip.IsGlobalUnicast()
 	ip.IsInterfaceLocalMulticast()
 	ip.IsLinkLocalMulticast()
@@ -138,6 +138,18 @@ func main() {
 
 	// NetworkSize returns the network size
 	ipNet.NetworkSize() // 24
+
+	// FirstIP returns the first IP in network 
+	ipNet.FirstIP() // 172.16.16.0
+
+	// FirstUsableIP returns the first usable (addressable) IP in network
+	ipNet.FirstUsableIP() // 172.16.16.1
+
+	// LastIP returns the list IP in network
+	ipNet.LastIP() // 172.16.16.255
+
+	// LastUsableIP returns the last usable (addressable) IP in network
+	ipNet.LastUsableIP() // 172.16.16.254
 
 	// Intersects whether the networks intersects the other network
 	ipNet.Intersects(ipx.MustParseCIDR("172.16.15.0/23")) // true
