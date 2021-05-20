@@ -139,6 +139,18 @@ func (n *IPNet) LastUsableIP() IP {
 	return n.IP.GetNextN(uint32(n.IPNumber() - 2))
 }
 
+// GetAllIP returns all ip addresses in network
+func (n *IPNet) GetAllIP() []IP {
+	var ipList []IP
+	ip := n.FirstIP()
+	for i := 0; i < n.IPNumber(); i++ {
+		ipList = append(ipList, ip)
+		ip = ip.GetNext()
+	}
+
+	return ipList
+}
+
 // RandomIP returns a random ip address in n network
 func (n *IPNet) RandomIP() IP {
 	return FromInt(uint32(rand.Intn(n.NetworkSize())) + n.FirstIP().ToInt())

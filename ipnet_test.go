@@ -280,3 +280,43 @@ func TestRandomIP(t *testing.T) {
 		}
 	}
 }
+
+var getAllIPTests = []struct {
+	in  IPNet
+	out []IP
+}{
+	{
+		*MustParseCIDR("172.16.16.0/30"),
+		[]IP{
+			IPv4(172, 16, 16, 0),
+			IPv4(172, 16, 16, 1),
+			IPv4(172, 16, 16, 2),
+			IPv4(172, 16, 16, 3),
+		},
+	},
+	{
+		*MustParseCIDR("172.16.16.0/31"),
+		[]IP{
+			MustParseIP("172.16.16.0"),
+			MustParseIP("172.16.16.1"),
+		},
+	},
+	{
+		*MustParseCIDR("172.16.16.0/32"),
+		[]IP{
+			IPv4(172, 16, 16, 0),
+		},
+	},
+}
+
+func TestGetAllIP(t *testing.T) {
+	for _, tt := range getAllIPTests {
+		out := tt.in.GetAllIP()
+		for i, outIP := range out {
+			if !reflect.DeepEqual(outIP.To4(), tt.out[i].To4()) {
+				t.Errorf("IPNet.GetAllIP(%v) = %v, want %v", tt.in, outIP, tt.out[i])
+			}
+		}
+
+	}
+}

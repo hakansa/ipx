@@ -151,6 +151,9 @@ func main() {
 	// LastUsableIP returns the last usable (addressable) IP in network
 	ipNet.LastUsableIP() // 172.16.16.254
 
+	// GetAllIP returns all IP's in the network as an array
+	ipNet.GetAllIP() // []IP{ 172.16.16.1, 172.16.16.2, ... , 172.16.16.255 }
+
 	// RandomIP returns a random ip in the network
 	ipNet.RandomIP() // 172.16.16.X
 
