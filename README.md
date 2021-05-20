@@ -184,6 +184,7 @@ import (
 func main() {
 
 	// ParseIPRange parses x and y as an IPRange
+	// Upper ip's boundary is excluded
 	ipRange, _ := ipx.ParseIPRange("172.16.16.0", "172.16.16.100")
 
 	// ParseIPRange throws a panic if the given strings is not valid IP addresses
@@ -197,39 +198,15 @@ func main() {
 
 	// Contains checks if ip is in range
 	ipRange.Contains(ipx.IPv4(172, 16, 16, 75)) // true
+
+	// IPNumber returns the number of ip addresses in IPRange
+	ipRange.IPNumber() // 100
+
+	// FirstIP returns the first IP in IPRange 
+	ipRange.FirstIP() // 172.16.16.0
+
+	// LastIP returns the list IP in IPRange
+	ipRange.LastIP() // 172.16.16.99
 }
 
-```
-
-## Other Examples
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/hakansa/ipx"
-)
-
-func main() {
-
-	
-
-	// ParseCIDR parses a string in CIDR notation
-	_, ipNet, _ := ipx.ParseCIDR("10.99.99.0/24")
-
-	// Containts returns true if the given IP is in the IP network
-	if ipNet.Contains(ip) {
-		fmt.Printf("%v is in %v network\n", ip.String(), ipNet.String())
-	}
-
-	_, ipNet2, _ := ipx.ParseCIDR("10.99.98.0/23")
-
-	// Intersects returns true if ip networks intersects with each other
-	if ipNet.Intersects(*ipNet2) {
-		fmt.Printf("%v network is intersects with %v network\n", ipNet.String(), ipNet2.String())
-	}
-
-}
 ```

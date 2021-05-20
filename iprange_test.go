@@ -91,7 +91,47 @@ func TestIPRangeIPNumber(t *testing.T) {
 	for _, tt := range ipRangeIPNumberTests {
 		out := tt.in.IPNumber()
 		if out != tt.out {
-			t.Errorf("IPNet.IPNumber(%v) = %v, want %v", tt.in, out, tt.out)
+			t.Errorf("IPRange.IPNumber(%v) = %v, want %v", tt.in, out, tt.out)
+		}
+	}
+}
+
+var ipRangeFirstLastIPTests = []struct {
+	in       *IPRange
+	outFirst IP
+	outLast  IP
+}{
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		IPv4(172, 16, 16, 0),
+		IPv4(172, 16, 16, 99),
+	},
+	{
+		MustParseIPRange("0.0.0.0", "10.10.10.10"),
+		IPv4(0, 0, 0, 0),
+		IPv4(10, 10, 10, 9),
+	},
+	{
+		MustParseIPRange("192.168.100.200", "192.168.100.50"),
+		IPv4(192, 168, 100, 50),
+		IPv4(192, 168, 100, 200),
+	},
+}
+
+func TestIPRangeFirstIP(t *testing.T) {
+	for _, tt := range ipRangeFirstLastIPTests {
+		out := tt.in.FirstIP()
+		if out.String() != tt.outFirst.String() {
+			t.Errorf("IPRange.FirstIP(%v) = %v, want %v", tt.in, out, tt.outFirst)
+		}
+	}
+}
+
+func TestIPRangeLastIP(t *testing.T) {
+	for _, tt := range ipRangeFirstLastIPTests {
+		out := tt.in.FirstIP()
+		if out.String() != tt.outFirst.String() {
+			t.Errorf("IPRange.LastIP(%v) = %v, want %v", tt.in, out, tt.outLast)
 		}
 	}
 }

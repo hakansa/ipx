@@ -56,3 +56,13 @@ func (i *IPRange) Contains(ip IP) bool {
 func (i *IPRange) IPNumber() int {
 	return int(i.Upper.ToInt() - i.Lower.ToInt())
 }
+
+// FirstIP returns the first ip in IPRange
+func (i *IPRange) FirstIP() IP {
+	return i.Lower
+}
+
+// LastIP returns the last ip in IPRange
+func (i *IPRange) LastIP() IP {
+	return i.Upper.GetPrevious()
+}
