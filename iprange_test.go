@@ -129,8 +129,8 @@ func TestIPRangeFirstIP(t *testing.T) {
 
 func TestIPRangeLastIP(t *testing.T) {
 	for _, tt := range ipRangeFirstLastIPTests {
-		out := tt.in.FirstIP()
-		if out.String() != tt.outFirst.String() {
+		out := tt.in.LastIP()
+		if out.String() != tt.outLast.String() {
 			t.Errorf("IPRange.LastIP(%v) = %v, want %v", tt.in, out, tt.outLast)
 		}
 	}
