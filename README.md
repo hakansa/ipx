@@ -171,6 +171,31 @@ func main() {
 }
 ```
 
+## IPRange
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/hakansa/ipx"
+)
+
+func main() {
+
+	// ParseIPRange parses x and y as an IPRange
+	ipRange, _ := ipx.ParseIPRange("172.16.16.0", "172.16.16.100")
+
+	// ParseIPRange throws a panic if the given strings is not valid IP addresses
+	ipRange = ipx.MustParseIPRange("172.16.16.0", "172.16.16.100")
+
+	// NewIPRange creates a new IPRange
+	ipRange = ipx.NewIPRange(ipx.IPv4(172, 16, 16, 0), ipx.IPv4(172, 16, 16, 100))
+
+}
+
+```
+
 ## Other Examples
 
 ```go

@@ -1,9 +1,10 @@
 package ipx
 
 // IPRange represents an IP range
+// Lower boundary is included and Upper boundary is not included
 type IPRange struct {
 	Lower IP // LowerIP
-	Upper IP // LowerIP
+	Upper IP // UpperIP
 }
 
 // ParseIPRange parses x and y as an IPRange
