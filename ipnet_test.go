@@ -282,8 +282,9 @@ func TestRandomIP(t *testing.T) {
 }
 
 var getAllIPTests = []struct {
-	in  IPNet
-	out []IP
+	in        IPNet
+	out       []IP
+	outUsable []IP
 }{
 	{
 		*MustParseCIDR("172.16.16.0/30"),
@@ -293,16 +294,27 @@ var getAllIPTests = []struct {
 			IPv4(172, 16, 16, 2),
 			IPv4(172, 16, 16, 3),
 		},
+		[]IP{
+			IPv4(172, 16, 16, 1),
+			IPv4(172, 16, 16, 2),
+		},
 	},
 	{
 		*MustParseCIDR("172.16.16.0/31"),
 		[]IP{
-			MustParseIP("172.16.16.0"),
-			MustParseIP("172.16.16.1"),
+			IPv4(172, 16, 16, 0),
+			IPv4(172, 16, 16, 1),
+		},
+		[]IP{
+			IPv4(172, 16, 16, 0),
+			IPv4(172, 16, 16, 1),
 		},
 	},
 	{
 		*MustParseCIDR("172.16.16.0/32"),
+		[]IP{
+			IPv4(172, 16, 16, 0),
+		},
 		[]IP{
 			IPv4(172, 16, 16, 0),
 		},
@@ -318,5 +330,17 @@ func TestGetAllIP(t *testing.T) {
 			}
 		}
 
+	}
+}
+
+func TestGetAllUsableIP(t *testing.T) {
+	for _, tt := range getAllIPTests {
+		out := tt.in.GetAllUsableIP()
+
+		for i, outIP := range out {
+			if !reflect.DeepEqual(outIP.To4(), tt.outUsable[i].To4()) {
+				t.Errorf("IPNet.GetAllIP(%v) = %v, want %v", tt.in, outIP, tt.out[i])
+			}
+		}
 	}
 }

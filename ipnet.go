@@ -151,6 +151,29 @@ func (n *IPNet) GetAllIP() []IP {
 	return ipList
 }
 
+// GetAllUsableIP returns all usable (adressable) ip addresses in network
+func (n *IPNet) GetAllUsableIP() []IP {
+	var ipList []IP
+
+	num := n.IPNumber()
+
+	if num == 1 {
+		ipList = append(ipList, n.FirstIP())
+		return ipList
+	} else if num == 2 {
+		ipList = append(ipList, n.FirstIP(), n.FirstIP().GetNext())
+		return ipList
+	}
+
+	ip := n.FirstIP().GetNext()
+	for i := 0; i < n.IPNumber()-2; i++ {
+		ipList = append(ipList, ip)
+		ip = ip.GetNext()
+	}
+
+	return ipList
+}
+
 // RandomIP returns a random ip address in n network
 func (n *IPNet) RandomIP() IP {
 	return FromInt(uint32(rand.Intn(n.NetworkSize())) + n.FirstIP().ToInt())
