@@ -34,3 +34,22 @@ func TestParseIPRange(t *testing.T) {
 
 	}
 }
+
+var ipRangeContainsTests = []struct {
+	ip      IP
+	ipRange *IPRange
+	ok      bool
+}{
+	{IPv4(172, 16, 16, 1), &IPRange{Lower: IPv4(172, 16, 16, 0), Upper: IPv4(172, 16, 16, 100)}, true},
+	{IPv4(172, 16, 16, 100), &IPRange{Lower: IPv4(172, 16, 16, 0), Upper: IPv4(172, 16, 16, 100)}, false},
+	{IPv4(172, 16, 15, 254), &IPRange{Lower: IPv4(172, 16, 16, 0), Upper: IPv4(172, 16, 16, 100)}, false},
+	{IPv4(172, 16, 16, 0), &IPRange{Lower: IPv4(172, 16, 16, 0), Upper: IPv4(172, 16, 16, 100)}, true},
+}
+
+func TestIPRangeContains(t *testing.T) {
+	for _, tt := range ipRangeContainsTests {
+		if ok := tt.ipRange.Contains(tt.ip); ok != tt.ok {
+			t.Errorf("IPRange(%v).Contains(%v) = %v, want %v", tt.ipRange, tt.ip, ok, tt.ok)
+		}
+	}
+}

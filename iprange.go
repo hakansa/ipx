@@ -45,3 +45,9 @@ func NewIPRange(x, y IP) *IPRange {
 
 	return &IPRange{y, x}
 }
+
+// Contains reports whether the IPRange includes ip
+func (i *IPRange) Contains(ip IP) bool {
+	ipInt := ip.ToInt()
+	return ipInt >= i.Lower.ToInt() && ipInt < i.Upper.ToInt()
+}

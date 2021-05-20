@@ -192,6 +192,11 @@ func main() {
 	// NewIPRange creates a new IPRange
 	ipRange = ipx.NewIPRange(ipx.IPv4(172, 16, 16, 0), ipx.IPv4(172, 16, 16, 100))
 
+	// Order is not important when creating IPRange
+	ipRange = ipx.MustParseIPRange("172.16.16.100", "172.16.16.0")
+
+	// Contains checks if ip is in range
+	ipRange.Contains(ipx.IPv4(172, 16, 16, 75)) // true
 }
 
 ```
