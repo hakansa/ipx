@@ -51,3 +51,8 @@ func (i *IPRange) Contains(ip IP) bool {
 	ipInt := ip.ToInt()
 	return ipInt >= i.Lower.ToInt() && ipInt < i.Upper.ToInt()
 }
+
+// IPNumber returns the number of ip addresses in IPRange
+func (i *IPRange) IPNumber() int {
+	return int(i.Upper.ToInt() - i.Lower.ToInt())
+}

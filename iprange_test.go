@@ -32,6 +32,31 @@ func TestParseIPRange(t *testing.T) {
 			}
 		}
 
+		// Test MustParseIPRange
+		out = MustParseIPRange(tt.inLower, tt.inUpper)
+
+		if tt.reverse {
+			if !reflect.DeepEqual(tt.inLower, out.Upper.String()) || !reflect.DeepEqual(tt.inUpper, out.Lower.String()) {
+				t.Errorf("ParseIPRange(%v,%v) = %v, %v; want %v, %v", tt.inLower, tt.inUpper, out, err, tt.out, tt.err)
+			}
+		} else {
+			if !reflect.DeepEqual(tt.inLower, out.Lower.String()) || !reflect.DeepEqual(tt.inUpper, out.Upper.String()) {
+				t.Errorf("ParseIPRange(%v,%v) = %v, %v; want %v, %v", tt.inLower, tt.inUpper, out, err, tt.out, tt.err)
+			}
+		}
+
+		// Test NewIPRange
+		out = NewIPRange(MustParseIP(tt.inLower), MustParseIP(tt.inUpper))
+
+		if tt.reverse {
+			if !reflect.DeepEqual(tt.inLower, out.Upper.String()) || !reflect.DeepEqual(tt.inUpper, out.Lower.String()) {
+				t.Errorf("ParseIPRange(%v,%v) = %v, %v; want %v, %v", tt.inLower, tt.inUpper, out, err, tt.out, tt.err)
+			}
+		} else {
+			if !reflect.DeepEqual(tt.inLower, out.Lower.String()) || !reflect.DeepEqual(tt.inUpper, out.Upper.String()) {
+				t.Errorf("ParseIPRange(%v,%v) = %v, %v; want %v, %v", tt.inLower, tt.inUpper, out, err, tt.out, tt.err)
+			}
+		}
 	}
 }
 
@@ -50,6 +75,23 @@ func TestIPRangeContains(t *testing.T) {
 	for _, tt := range ipRangeContainsTests {
 		if ok := tt.ipRange.Contains(tt.ip); ok != tt.ok {
 			t.Errorf("IPRange(%v).Contains(%v) = %v, want %v", tt.ipRange, tt.ip, ok, tt.ok)
+		}
+	}
+}
+
+var ipRangeIPNumberTests = []struct {
+	in  *IPRange
+	out int
+}{
+	{&IPRange{Lower: IPv4(172, 16, 16, 0), Upper: IPv4(172, 16, 16, 100)}, 100},
+	{&IPRange{Lower: IPv4(172, 16, 15, 254), Upper: IPv4(172, 16, 16, 4)}, 6},
+}
+
+func TestIPRangeIPNumber(t *testing.T) {
+	for _, tt := range ipRangeIPNumberTests {
+		out := tt.in.IPNumber()
+		if out != tt.out {
+			t.Errorf("IPNet.IPNumber(%v) = %v, want %v", tt.in, out, tt.out)
 		}
 	}
 }
