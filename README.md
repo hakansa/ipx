@@ -151,6 +151,9 @@ func main() {
 	// LastUsableIP returns the last usable (addressable) IP in network
 	ipNet.LastUsableIP() // 172.16.16.254
 
+	// RandomIP returns a random ip in the network
+	ipNet.RandomIP() // 172.16.16.X
+
 	// Intersects whether the networks intersects the other network
 	ipNet.Intersects(ipx.MustParseCIDR("172.16.15.0/23")) // true
 

@@ -271,3 +271,12 @@ func TestLastUsableIP(t *testing.T) {
 		}
 	}
 }
+
+func TestRandomIP(t *testing.T) {
+	for _, tt := range lastIPTests {
+		out := tt.in.RandomIP()
+		if !tt.in.Contains(out) {
+			t.Errorf("IPNet.RandomIP(%v) = %v is not in %v network", tt.in, out, tt.in)
+		}
+	}
+}

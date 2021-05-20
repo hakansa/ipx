@@ -1,6 +1,7 @@
 package ipx
 
 import (
+	"math/rand"
 	"net"
 	"strconv"
 )
@@ -136,6 +137,11 @@ func (n *IPNet) LastUsableIP() IP {
 		return n.IP
 	}
 	return n.IP.GetNextN(uint32(n.IPNumber() - 2))
+}
+
+// RandomIP returns a random ip address in n network
+func (n *IPNet) RandomIP() IP {
+	return FromInt(uint32(rand.Intn(n.NetworkSize())) + n.FirstIP().ToInt())
 }
 
 // Network returns the address's network name, "ip+net".
