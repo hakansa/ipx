@@ -169,3 +169,12 @@ func TestGetIPRangeAllIP(t *testing.T) {
 
 	}
 }
+
+func TestIPRangeRandomIP(t *testing.T) {
+	for _, tt := range ipRangeFirstLastIPTests {
+		out := tt.in.RandomIP()
+		if !tt.in.Contains(out) {
+			t.Errorf("IPRange.RandomIP(%v) = %v is not in %v IPRange", tt.in, out, tt.in)
+		}
+	}
+}

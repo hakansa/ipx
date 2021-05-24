@@ -1,5 +1,7 @@
 package ipx
 
+import "math/rand"
+
 // IPRange represents an IP range
 // Lower boundary is included and Upper boundary is not included
 type IPRange struct {
@@ -82,4 +84,9 @@ func (i *IPRange) GetAllIP() []IP {
 	ipList = append(ipList, i.Lower.GetAllNextN(uint32(i.IPNumber())-1)...)
 
 	return ipList
+}
+
+// RandomIP returns a random ip address in IPRange
+func (i *IPRange) RandomIP() IP {
+	return FromInt(uint32(rand.Intn(i.IPNumber())) + i.Lower.ToInt())
 }

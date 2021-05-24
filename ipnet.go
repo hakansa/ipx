@@ -176,7 +176,7 @@ func (n *IPNet) GetAllUsableIP() []IP {
 
 // RandomIP returns a random ip address in n network
 func (n *IPNet) RandomIP() IP {
-	return FromInt(uint32(rand.Intn(n.NetworkSize())) + n.FirstIP().ToInt())
+	return FromInt(uint32(rand.Intn(n.IPNumber())) + n.FirstIP().ToInt())
 }
 
 // Network returns the address's network name, "ip+net".

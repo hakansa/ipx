@@ -207,6 +207,9 @@ func main() {
 
 	// LastIP returns the list IP in IPRange
 	ipRange.LastIP() // 172.16.16.99
+
+	// GetAllIP returns all IP's in IPRange as an array
+	ipRange.GetAllIP() // []IP{ 172.16.16.0, 172.16.16.1, ... , 172.16.16.99 }
 }
 
 ```
