@@ -178,3 +178,51 @@ func TestIPRangeRandomIP(t *testing.T) {
 		}
 	}
 }
+
+var ipRangeIntersectsTests = []struct {
+	range1 *IPRange
+	range2 *IPRange
+	out    bool
+}{
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.16.77", "172.16.16.102"),
+		true,
+	},
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.16.77", "172.16.16.99"),
+		true,
+	},
+
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.16.100", "172.16.16.105"),
+		false,
+	},
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.15.250", "172.16.15.255"),
+		false,
+	},
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.15.250", "172.16.16.0"),
+		false,
+	},
+	{
+		MustParseIPRange("172.16.16.0", "172.16.16.100"),
+		MustParseIPRange("172.16.15.250", "172.16.16.1"),
+		true,
+	},
+}
+
+func TestIPRangeIntersects(t *testing.T) {
+	for _, tt := range ipRangeIntersectsTests {
+		out := tt.range1.Intersects(*tt.range2)
+		if out != tt.out {
+			t.Errorf("IPRange.Intersects(%v)(%v) = %v, want %v", tt.range1, tt.range2, out, tt.out)
+		}
+
+	}
+}

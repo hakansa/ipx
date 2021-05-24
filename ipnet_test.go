@@ -344,3 +344,36 @@ func TestGetAllUsableIP(t *testing.T) {
 		}
 	}
 }
+
+var ipNetIntersectsTests = []struct {
+	net1 *IPNet
+	net2 *IPNet
+	out  bool
+}{
+	{
+		MustParseCIDR("172.16.16.0/24"),
+		MustParseCIDR("172.16.16.0/23"),
+		true,
+	},
+	{
+		MustParseCIDR("172.16.16.0/24"),
+		MustParseCIDR("172.16.14.0/24"),
+		false,
+	},
+
+	{
+		MustParseCIDR("0.0.0.0/0"),
+		MustParseCIDR("172.16.14.0/24"),
+		true,
+	},
+}
+
+func TestIPNetIntersects(t *testing.T) {
+	for _, tt := range ipNetIntersectsTests {
+		out := tt.net1.Intersects(*tt.net2)
+		if out != tt.out {
+			t.Errorf("IPNet.Intersects(%v)(%v) = %v, want %v", tt.net1, tt.net2, out, tt.out)
+		}
+
+	}
+}

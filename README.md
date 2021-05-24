@@ -210,6 +210,12 @@ func main() {
 
 	// GetAllIP returns all IP's in IPRange as an array
 	ipRange.GetAllIP() // []IP{ 172.16.16.0, 172.16.16.1, ... , 172.16.16.99 }
+
+	// RandomIP returns a random ip in IPRange
+	ipRange.RandomIP() // 172.16.16.X (0 <= X < 100)
+
+	// Intersects whether the IPRange intersects other IPRange
+	ipRange.Intersects(ipx.MustParseIPRange("172.16.16.50", "172.16.16.150")) // true
 }
 
 ```

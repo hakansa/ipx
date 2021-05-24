@@ -90,3 +90,8 @@ func (i *IPRange) GetAllIP() []IP {
 func (i *IPRange) RandomIP() IP {
 	return FromInt(uint32(rand.Intn(i.IPNumber())) + i.Lower.ToInt())
 }
+
+// Intersects checks whether the IPRange intersects the other IPrange
+func (i *IPRange) Intersects(i2 IPRange) bool {
+	return i.Contains(i2.Lower) || i.Contains(i2.LastIP()) || i2.Contains(i.Lower) || i2.Contains(i.LastIP())
+}
