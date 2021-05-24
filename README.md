@@ -48,6 +48,9 @@ func main() {
 	// IsV6 returns true for ipv6 addresses
 	ip.IsV6() // false 
 
+	// Before checks i is before than given ip 
+	ip.Before(ipx.IPv4(172, 16, 16, 2)) // true 
+
 	// IsPrivate returns true if ip is in a private network
 	ip.IsPrivate() // true
 

@@ -66,7 +66,7 @@ func (i IP) IsV6() bool {
 	return i.IP != nil
 }
 
-// Before checks if x is before i
+// Before checks if i is before x
 func (i IP) Before(x IP) bool {
 	return i.ToInt() < x.ToInt()
 }
