@@ -48,6 +48,9 @@ func main() {
 	// IsV6 returns true for ipv6 addresses
 	ip.IsV6() // false 
 
+	// IsPrivate returns true if ip is in a private network
+	ip.IsPrivate() // true
+
 	// ToInt returns the decimal representation of ip
 	// ToInt returns 0 for ipv6 addresses
 	ip.ToInt() // 2886733825
@@ -61,9 +64,6 @@ func main() {
 
 	// ToHex returns the hex representation of ip
 	ip.ToHex() // AC101001
-
-	// IsPrivate returns true if ip is in a private network
-	ip.IsPrivate() // true
 
 	// GetNext returns next IP
 	ip.GetNext() // 172.16.16.2

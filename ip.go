@@ -66,6 +66,11 @@ func (i IP) IsV6() bool {
 	return i.IP != nil
 }
 
+// Before checks if x is before i
+func (i IP) Before(x IP) bool {
+	return i.ToInt() < x.ToInt()
+}
+
 // ToInt returns the int reprenstation of IP
 // If i is an IPv6 address, it returns zero
 func (i IP) ToInt() uint32 {

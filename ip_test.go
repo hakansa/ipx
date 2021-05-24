@@ -287,6 +287,44 @@ func TestIPTypes(t *testing.T) {
 	}
 }
 
+var ipBeforeTests = []*struct {
+	in     IP
+	x      IP
+	before bool
+}{
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		IP{net.IP{192, 0, 2, 0}},
+		false,
+	},
+
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		IP{net.IP{192, 0, 2, 2}},
+		true,
+	},
+
+	{
+		IP{net.IP{192, 0, 2, 1}},
+		IP{net.IP{0, 0, 0, 0}},
+		false,
+	},
+
+	{
+		IP{net.IP{0, 0, 0, 0}},
+		IP{net.IP{192, 0, 2, 1}},
+		true,
+	},
+}
+
+func TestIPBefore(t *testing.T) {
+	for _, tt := range ipBeforeTests {
+		if out := tt.in.Before(tt.x); out != tt.before {
+			t.Errorf("IP.Before(%v)(%v) = %v, want %v", tt.in, tt.x, out, tt.before)
+		}
+	}
+}
+
 var ipEmptyStringTests = []*struct {
 	in  IP
 	out string
