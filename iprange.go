@@ -64,5 +64,22 @@ func (i *IPRange) FirstIP() IP {
 
 // LastIP returns the last ip in IPRange
 func (i *IPRange) LastIP() IP {
+	if i.Lower.Equal(i.Upper) {
+		return i.Lower
+	}
 	return i.Upper.GetPrevious()
+}
+
+// GetAllIP returns all IP's in IPRange
+func (i *IPRange) GetAllIP() []IP {
+
+	ipList := []IP{i.Lower}
+
+	if i.Lower.Equal(i.Upper) {
+		return ipList
+	}
+
+	ipList = append(ipList, i.Lower.GetAllNextN(uint32(i.IPNumber())-1)...)
+
+	return ipList
 }
